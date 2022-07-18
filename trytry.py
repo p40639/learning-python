@@ -54,3 +54,11 @@ class MyAwesomeClass:
 
 # object2 = MyAwesomeClass(100, "aaa", "bbb")
 # object2.show()
+
+# dict_1 = {"key1": 50, "ket2": "uhuhu"}
+# h = dict_1["key1"]
+
+a = 5
+if a == 5:
+    print("a = 5")
+a = [1,2,3,4,5]

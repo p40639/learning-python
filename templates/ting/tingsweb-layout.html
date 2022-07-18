@@ -25,21 +25,7 @@
         }
         </style>
     </head>
-    <div class="main">
-        <ul class="m-3 nav justify-content-end">
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="https://accounts.google.com/ServiceLogin" role="button">Login</a>
-            </li>
-        </ul>
-    </div> 
-    <div class="text-center">
-        <h1 class="m-5">Ting's Practise Web</h1>
-    </div>
-    <form action="/register" method="get">
-        <label for="inputUsername" class="visually-hidden">Username</label>
-        <input type="text" class="form-control" name="user" id="inputUsername" placeholder="Username">
-        <label for="inputPassword" class="visually-hidden">Password</label>
-        <input type="password" class="form-control" name="password" id="inputPassword" placeholder="Password">
-        <button type="submit" class="btn btn-primary mb-3">Register</button>
-    </form>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
 </html>
