@@ -12,13 +12,19 @@ Session(app)
 
 db = SQL("sqlite:///tingsweb-datbas.db")
 
-@app.route("/")
+@app.route("/login")
 def hello_world():
-    return render_template("ting/tingsweb-signup.html")
+    if session.get("username") is not None:
+        return redirect("/")
+    error=request.args.get("error")
+    if error is not None:
+        if error == "fail-to-login":
+            return render_template("ting/tingsweb-login.html",error = "Invalid")
+        return render_template("ting/tingsweb-login.html",error = error)
+    return render_template("ting/tingsweb-login.html",error = "")
 
-@app.route("/registered", methods=["POST"])
+@app.route("/registered", methods=["GET","POST"])
 def registered():
-    print(request.form)
     username = request.form.get("username")
     password = request.form.get("password")
     lastname = request.form.get("lastname")
@@ -28,19 +34,27 @@ def registered():
     db.execute("INSERT INTO registrants (username, password, lastname, firstname, email, phonenumber) VALUES(?, ?, ?, ?, ?, ?)", username, password, lastname, firstname, email, phonenumber)
     return render_template("ting/tingsweb.html")
 
+@app.route("/", methods=["GET","POST"])
+def logined():
+    if session.get("username") is not None:
+        print("You are logined")
+    if request.method == "POST":
+        print(request.form)
+        username = request.form.get("username")
+        password = request.form.get("password")
+        info = db.execute(f"SELECT * from registrants where username = '{username}'")
+        if len(info) != 1:
+            return redirect("/login?error=fail-to-login")
+        if info[0]['password'] == password:
+            session["username"] = username
+            return render_template("ting/tingsweb.html")
+        return redirect("/login?error=fail-to-login")
+    return render_template("ting/tingsweb.html")
+
+@app.route("/register", methods=["GET","POST"])
+def register():
+    return render_template("ting/tingsweb-signup.html")
 
 
-# @app.route("/register")
-# def register():
-#     connection = sqlite3.connect('example.db')
-#     cursor = connection.cursor()
-#     cursor.execute("SELECT * from users")
-#     print(cursor.fetchall())
-#     user = request.args.get("user")
-#     password = request.args.get("password")
-#     cursor.execute("INSERT INTO users VALUES (?,?,?,?,?)", ("Ting","email","123",user,password))
-#     connection.commit()
-#     connection.close()
-#     with open('tingsweb.html', 'r') as file:
-#         data = file.read()
-#         return data
+
+
