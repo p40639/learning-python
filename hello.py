@@ -12,6 +12,10 @@ Session(app)
 
 db = SQL("sqlite:///tingsweb-datbas.db")
 
+@app.route("/", methods=["GET","POST"])
+def hello():
+    return render_template("ting/tingsweb.html")
+
 @app.route("/login")
 def hello_world():
     if session.get("username") is not None:
@@ -32,9 +36,9 @@ def registered():
     email = request.form.get("email")
     phonenumber = request.form.get("phonenumber")
     db.execute("INSERT INTO registrants (username, password, lastname, firstname, email, phonenumber) VALUES(?, ?, ?, ?, ?, ?)", username, password, lastname, firstname, email, phonenumber)
-    return render_template("ting/tingsweb.html")
+    return redirect("/")
 
-@app.route("/", methods=["GET","POST"])
+@app.route("/logined", methods=["GET","POST"])
 def logined():
     if session.get("username") is not None:
         print("You are logined")
@@ -47,14 +51,35 @@ def logined():
             return redirect("/login?error=fail-to-login")
         if info[0]['password'] == password:
             session["username"] = username
-            return render_template("ting/tingsweb.html")
+            return redirect("/")
         return redirect("/login?error=fail-to-login")
-    return render_template("ting/tingsweb.html")
+    return redirect("/")
 
 @app.route("/register", methods=["GET","POST"])
 def register():
     return render_template("ting/tingsweb-signup.html")
 
+@app.route("/logout", methods=["GET","POST"])
+def logout():
+    session["username"] = None
+    return redirect("/")
 
+@app.route("/cart", methods=["GET","POST"])
+def cart():
+    return render_template("ting/tingsweb.html")
 
+@app.route("/shop", methods=["GET","POST"])
+def shop():
+    if session.get("username") is None:
+        return render_template("ting/tingsweb-login.html")
+    return render_template("ting/tingsweb-shop.html")
 
+@app.route("/shoped", methods=["GET","POST"])
+def shoped():
+    username = session.get("username")
+    productname = request.form.get("productname")
+    link = request.form.get("link")
+    amount = request.form.get("amount")
+    price = request.form.get("price")
+    db.execute("INSERT INTO productinfo (username, productname, link, amount, price) VALUES(?, ?, ?, ?, ?)", username, productname, link, amount, price)
+    return render_template("ting/tingsweb-shop.html")

@@ -6,13 +6,24 @@
 {% block body %}
     <div class="main">
         <ul class="m-3 nav justify-content-end">
-            <li class="nav-item">
-                <a class="btn btn-primary" href="/login" role="button">login</a>
-            </li>
-            <li> </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="/register" role="button">sign up</a>
-            </li>
+            {% if session["username"] %}
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="/cart" role="button">Cart</a>
+                </li>
+                <li> </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="/logout" role="button">log out</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="/login" role="button">login</a>
+                </li>
+                <li> </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="/register" role="button">sign up</a>
+                </li>
+            {% endif %}
+            
         </ul>
     </div> 
     <div class="text-center">
@@ -21,8 +32,10 @@
     <div class="vertical-center text-center">
         <h2 class="m-3">Welcome!</h2>
         <h3 class="m-3">Just provide the info, I will bring you the stuff!</h3>
-        <button class="m-3 btn btn-primary" type="button">Let's Start Shopping</button>
+        <a class="btn btn-primary" href="/shop" role="button">Let's Start Shopping</a>
+        <!-- <button class="m-3 btn btn-primary" href="/shop" type="button">Let's Start Shopping</button> -->
     </div>
+ 
 {% endblock %}
 
 

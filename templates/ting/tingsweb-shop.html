@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+{% extends "ting/tingsweb-layout.html" %}
+
+
+{% block body %}
+    <div class="main">
+        <ul class="m-3 nav justify-content-end">
+            {% if session["username"] %}
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="/cart" role="button">Cart</a>
+                </li>
+                <li> </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="/logout" role="button">log out</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="/login" role="button">login</a>
+                </li>
+                <li> </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="/register" role="button">sign up</a>
+                </li>
+            {% endif %}
+            
+        </ul>
+    </div> 
+    <div class="text-center">
+        <h1 class="m-5">Ting's Practise Web</h1>
+        
+    </div>
+    <form action="/shoped" method="post">
+        <div class="col-4 offset-4">
+            <h5 class="m-2">Tell me what you want:</h5>
+            <div class="mb-2">
+                <!-- <i class="fa-regular fa-face-rolling-eyes fa-2xl"></i> -->
+                <label for="inputproductname">Product Name:</label>
+                <input type="text" class="form-control" name="productname" id="inputproductname" placeholder="Product Name">
+            </div>
+            <div class="mb-2">
+                <label for="inputlink">Product Link:</label>
+                <input type="link" class="form-control" name="link" id="inputlink" placeholder="Link">
+            </div>
+            <div class="mb-2">
+                <label for="inputamount">Number of the Product:</label>
+                <input type="text" class="form-control" name="amount" id="inputamount" placeholder="How many do you want">
+            </div>
+            <div class="mb-2">
+                <label for="inputprice">Acceptable Price:</label>
+                <input type="price" class="form-control" name="price" id="inputprice" placeholder="Acceptable Price per product">
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+            </div>
+        </form>
+
+
+{% endblock %}
